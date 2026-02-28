@@ -12,13 +12,12 @@ def even_gen(n):
 n_val = int(input("Сан енгізіңіз (n): "))
 print("Жұп сандар:", ", ".join(even_gen(n_val)))
 
-# 3. 3-ке және 4-ке бөлінетін сандар
 def div_3_4(n):
     for i in range(n + 1):
         if i % 3 == 0 and i % 4 == 0:
             yield i
 
-#квадрат
+
 def squares(a, b):
     for i in range(a, b + 1):
         yield i ** 2
