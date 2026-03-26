@@ -8,5 +8,5 @@ os.makedirs("parent/child/grandchild", exist_ok=True)
 items = os.listdir(".")
 print(items)
 
-current_path = os.getcwd()
-print(current_path)
+qai_fileda_turganyn_anyktaidy= os.getcwd()
+print(qai_fileda_turganyn_anyktaidy)
