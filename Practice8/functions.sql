@@ -10,21 +10,38 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 /*3-exe*/
-CREATE OR REPLACE FUNCTION insert_many_users(names_arr text[],phones_arr text[])
-RETURNS TABLE(enter_name text,enter_phone text) as $$
-DECLARE 
-    i INTEGER
+-- CREATE OR REPLACE FUNCTION insert_many_users(names_arr text[],phones_arr text[])
+-- RETURNS TABLE(enter_name text,enter_phone text) as $$
+-- DECLARE 
+--     i INTEGER
+-- BEGIN
+--     for i in 1.array_length(names_arr,1) LOOP
+--         IF length(phones_arr[i])=11 and phones_arr[i] ~ '^[0-9]+$' then 
+--             insert into phonebook_pr8 (name, phone) 
+--             values (names_arr[i], phones_arr[i])
+--         ELSE
+--             err_name := names_arr[i];
+--             err_phone := phones_arr[i];
+--             RETURN NEXT;
+--         END IF;
+--     END LOOP;
+-- END;
+-- $$ LANGUAGE plpgsql;
+CREATE OR REPLACE FUNCTION insert_many_users(names_arr TEXT[], phones_arr TEXT[])
+RETURNS TABLE(err_name TEXT, err_phone TEXT) AS $$
+DECLARE
+    i INTEGER;
 BEGIN
-    for i in 1.array_length(names_arr,1) LOOP
-        IF length(phones_arr[i])=11 and phones_arr[i] ~ '^[0-9]$' then 
-            insert into phonebook_pr8 (name, phone) 
-            values (names_arr[i], phones_arr[i])
+    FOR i IN 1..array_length(names_arr, 1) LOOP
+        IF length(phones_arr[i]) = 11 AND phones_arr[i] ~ '^[0-9]+$' THEN
+            INSERT INTO phonebook_pr8 (name, phone) 
+            VALUES (names_arr[i], phones_arr[i])
+            ON CONFLICT (name) DO UPDATE SET phone = EXCLUDED.phone;
         ELSE
             err_name := names_arr[i];
             err_phone := phones_arr[i];
             RETURN NEXT;
         END IF;
-        
     END LOOP;
 END;
 $$ LANGUAGE plpgsql;

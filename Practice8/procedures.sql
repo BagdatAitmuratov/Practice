@@ -8,6 +8,7 @@ BEGIN
     ELSE
         insert into phonebook_pr8 (name,phone) values (p_name,p_phone);
     END IF;
+END;
 $$ LANGUAGE plpgsql;
 /*5-EXE*/
 CREATE OR REPLACE PROCEDURE delete_contact(p_search TEXT)

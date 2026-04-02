@@ -13,22 +13,6 @@ def get_con():
         user=parametrs['user'],
         password=parametrs['password']
     )
-def add_info_phonebook_pr8():
-    with get_con() as conn:
-        with conn.cursor() as throw:
-            throw.execute('''INSERT INTO phonebook_pr8 (name, phone) VALUES 
-                                    ('Asxat', '87071112233'),
-                                    ('Marat', '87015554433'),
-                                    ('Murat', '87479998877'),
-                                    ('Aliya', '87052223344'),
-                                    ('Ivan', '87001110011'),
-                                    ('Samal', '87084445566'),
-                                    ('Berik', '87027778899'),
-                                    ('Elena', '87773332211'),
-                                    ('Arman', '87010001122'),
-                                    ('Guldana', '87475556677')
-                          ;''')
-        conn.commit()
 def create_table():#---------------------------------------------------------------------
     with get_con() as conn:
         with conn.cursor() as throw:
@@ -51,7 +35,7 @@ def see_phonebook_pr8():#-------------------------------------------------------
 def find_contact(text):
     with get_con() as conn:
         with conn.cursor() as f:
-            f.execute("SELECT * FROM find_name_or_phone(%s)",(text))
+            f.execute("SELECT * FROM find_name_or_phone(%s)",(text, ))
             rows=f.fetchall()
             for row in rows:
                 print(f"Name: {row[0]}, Phone: {row[1]}")
@@ -68,7 +52,7 @@ def add_many_contacts():
     phones = ['87071112233', '87014445566', '123', '87470009988','8707aaa1111']
     with get_con() as conn:
         with conn.cursor() as cur:
-            cur.execute("SELECT * FROM insert_many_users(%s, %s)", (names, phones))
+            cur.execute("SELECT * FROM insert_many_users(%s::TEXT[], %s::TEXT[])", (names, phones))
             invalid_data = cur.fetchall()
             conn.commit()
             if invalid_data:
@@ -102,7 +86,6 @@ def del_contact():
         print("Delete contact ")
 #menu
 def menu():
-    add_info_phonebook_pr8()
     create_table()
     conn = get_con()
     try:
