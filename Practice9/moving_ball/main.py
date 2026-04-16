@@ -16,7 +16,7 @@ radius = 20
 speed = 25
 
 clock = pygame.time.Clock()
-FPS = 60
+FPS = 30
 
 runnig = True
 while runnig:
@@ -46,6 +46,6 @@ while runnig:
     
     screen.blit(bg,(0,0))
     pygame.draw.circle(screen,color_red,(circle_x,circle_y),radius)
-    clock.tick(30)
+    clock.tick(FPS)
     pygame.display.flip()
 pygame.quit()
