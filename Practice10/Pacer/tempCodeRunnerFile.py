@@ -1,0 +1,1 @@
+if SCORE%3==0 or SCORE%4==0:
