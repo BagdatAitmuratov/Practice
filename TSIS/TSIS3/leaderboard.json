@@ -1,6 +1,66 @@
 [
-    {
-        "coins": 24,
-        "score": 0
-    }
+  {
+    "name": "\u043f\u0443\u0448\u043a\u0430\u0430\u0430",
+    "score": 20,
+    "coins": 15,
+    "distance": 867,
+    "date": "2026-05-02 03:18"
+  },
+  {
+    "name": "jjj",
+    "score": 17,
+    "coins": 5,
+    "date": "2026-05-02 03:08"
+  },
+  {
+    "name": "Baga",
+    "score": 15,
+    "coins": 14,
+    "date": "2026-05-02 03:07"
+  },
+  {
+    "name": "\u0438\u0444\u043f\u0444",
+    "score": 9,
+    "coins": 6,
+    "distance": 535,
+    "date": "2026-05-02 03:26"
+  },
+  {
+    "name": "\u0440\u0440\u0440",
+    "score": 7,
+    "coins": 1,
+    "distance": 408,
+    "date": "2026-05-02 03:22"
+  },
+  {
+    "name": "jjjjjj",
+    "score": 6,
+    "coins": 12,
+    "date": "2026-05-02 03:12"
+  },
+  {
+    "name": "\u043f\u0443\u0448\u043a\u0430",
+    "score": 4,
+    "coins": 8,
+    "distance": 211,
+    "date": "2026-05-02 03:15"
+  },
+  {
+    "name": "kjbkj",
+    "score": 1,
+    "coins": 0,
+    "date": "2026-05-02 03:08"
+  },
+  {
+    "name": "Bagdat",
+    "score": 0,
+    "coins": 0,
+    "date": "2026-05-02"
+  },
+  {
+    "name": "aga",
+    "score": 0,
+    "coins": 0,
+    "date": "2026-05-02 03:08"
+  }
 ]

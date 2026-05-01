@@ -1,151 +1,195 @@
 import pygame
 import random
-from random import randint
 import time
-pygame.init()
+import sys
 
+# Ойынды инициализациялау
+pygame.init()
+WIDTH, HEIGHT = 840, 650
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Racer: Mud & Intro Edition")
 clock = pygame.time.Clock()
 
-screen = pygame.display.set_mode((840,650))
-pygame.display.set_caption("Racer")
+# Ресурстарды жүктеу (Жолдарын тексеріп алыңыз)
+try:
+    bg = pygame.image.load("image/racer_bg.png")
+    player_img = pygame.image.load("image/up_player.png")
+    car_img = pygame.image.load("image/up_car.png")
+    coin_img = pygame.image.load("image/up_coin.png")
+    # Балшық үшін кішкене қоңыр тіктөртбұрыш немесе сурет
+    mud_img = pygame.Surface((100, 60))
+    mud_img.fill((101, 67, 33)) # Қоңыр түс
+    
+    avaria_sound = pygame.mixer.Sound("sound/avaria.mp3")
+except:
+    print("Ресурстар табылмады! Сурет жолдарын тексеріңіз.")
 
+# Қаріптер
+font_big = pygame.font.SysFont("Comic Sans MS", 60, True)
+font_small = pygame.font.SysFont("Comic Sans MS", 30, True)
 
-bg = pygame.image.load("image/racer_bg.png")
-player = pygame.image.load("image/up_player.png")
-car = pygame.image.load("image/up_car.png")
-coin = pygame.image.load("image/up_coin.png")
-avaria_sound = pygame.mixer.Sound("sound/avaria.mp3")
-music = pygame.mixer.Sound("sound/music1.wav")
+# Глобалдық айнымалылар
+speed_car = 4
+score = 0
+sum_coin = 0
 
-font = pygame.font.SysFont("Comic Sans MS",60,True)
-scores_font = pygame.font.SysFont("Comic Sans MS",30,True)
-
-bg_y = 0
-bg_hight=bg.get_height()
-
-
-score =0
-sum_coin =0
-speed_car=4
-
-#кластар--------------------------------------------
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = player
-        self.rect = self.image.get_rect()
-        self.rect.center = (420,580)
+        self.image = player_img
+        self.rect = self.image.get_rect(center=(420, 580))
+        self.base_speed = 8
         self.speed = 8
+        self.slow_timer = 0
+
     def update(self):
+        # Балшық эффектісін тексеру
+        if time.time() < self.slow_timer:
+            self.speed = 3  # Баяу жылдамдық
+        else:
+            self.speed = self.base_speed
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] and self.rect.left > 125:
             self.rect.x -= self.speed
         if keys[pygame.K_RIGHT] and self.rect.right < 650:
             self.rect.x += self.speed
+
 class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-
-        
-        self.image = car
-        self.rect = self.image.get_rect()
-        self.rect.x = random.randint(125,675)
-        self.rect.y = -100
+        self.image = car_img
+        self.rect = self.image.get_rect(center=(random.randint(150, 650), -100))
 
     def update(self):
-        global score,speed_car
+        global score, speed_car
         self.rect.y += speed_car
-        if self.rect.top > 650:
+        if self.rect.top > HEIGHT:
             score += 1
-        
-            if sum_coin % 5 == 0:
-                speed_car += 2
+            if score % 5 == 0: # Әр 5 машина сайын жылдамдық артады
+                speed_car += 1
             self.rect.y = -100
-            self.rect.x = random.randint(125,675)
+            self.rect.x = random.randint(150, 650)
+
+class Mud(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = mud_img
+        self.rect = self.image.get_rect(center=(random.randint(150, 650), -500))
+
+    def update(self):
+        self.rect.y += 5
+        if self.rect.top > HEIGHT:
+            self.rect.y = random.randint(-1500, -1000)
+            self.rect.x = random.randint(150, 650)
+
 class Coin(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image =coin
-        self.rect = self.image.get_rect()
-        if score%3==0 or score%4==0:
-                self.rect.center = (randint(175,675),-100)
-    def speed_coin(self):
-        self.rect.move_ip(0,5)
-        if self.rect.top>650:
-            self.rect.top = 0
-#class------------------------------------------------------\
-#класстардың қосылуы
-P1 = Player()
-E1 = Enemy()
-C0in  = Coin()
-enemies = pygame.sprite.Group()
-enemies.add(E1)
-coins = pygame.sprite.Group()
-coins.add(C0in)
-all_sprites = pygame.sprite.Group()
-all_sprites.add(P1)
-all_sprites.add(E1)
-all_sprites.add(C0in)
+        self.image = coin_img
+        self.rect = self.image.get_rect(center=(random.randint(150, 650), -100))
 
+    def update(self):
+        self.rect.y += 5
+        if self.rect.top > HEIGHT:
+            self.rect.y = -100
+            self.rect.x = random.randint(150, 650)
 
-
-
-run = True
-while run:
-    screen.blit(bg,(0,0))
-    screen.blit(bg,(0,bg_y))
-    screen.blit(bg,(0,bg_y-650))
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
-    
-    #шекара-----------------------
-    #75----675
-    #----------------------------
-    P1.update()
-    E1.update()
-    C0in.speed_coin()
-    if pygame.sprite.spritecollideany(P1,enemies):
-        avaria_sound.play()
-        run=False
-    if pygame.sprite.spritecollideany(P1,coins):
-        #random coin sums---------
-        sum_coin += randint(1,3)
-        C0in.rect.top = -100
-        C0in.rect.center = (randint(175,675),-100)
-    if pygame.sprite.spritecollideany(P1, enemies):
-        pygame.mixer.music.stop()
-        avaria_sound.play()
-        time.sleep(0.5)
+def show_intro():
+    intro = True
+    while intro:
+        screen.fill((50, 50, 50))
+        title = font_big.render("RACER GAME", True, (255, 215, 0))
+        instr = font_small.render("Press SPACE to Start", True, (255, 255, 255))
+        screen.blit(title, (WIDTH//2 - title.get_width()//2, 200))
+        screen.blit(instr, (WIDTH//2 - instr.get_width()//2, 350))
         
-        screen.fill((255,0,0))
-        game_over = font.render("GAME OVER", True, (0,0,0))
-        res_score = font.render(f"Score: {score}", True, (0,0,0))
-        coins_score = font.render(f"Coins:{sum_coin}", True,(0,0,0))
-        screen.blit(game_over, (240, 225))
-        screen.blit(res_score, (240, 325))
-        screen.blit(coins_score,(240, 425))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit(); sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    intro = False
+        pygame.display.update()
+
+def game_loop():
+    global score, sum_coin, speed_car
+    score = 0
+    sum_coin = 0
+    speed_car = 4
+    
+    P1 = Player()
+    E1 = Enemy()
+    C1 = Coin()
+    M1 = Mud()
+    
+    enemies = pygame.sprite.Group(E1)
+    coins = pygame.sprite.Group(C1)
+    muds = pygame.sprite.Group(M1)
+    all_sprites = pygame.sprite.Group(P1, E1, C1, M1)
+    
+    bg_y = 0
+    run = True
+    
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit(); sys.exit()
+
+        # Фонды жылжыту
+        screen.blit(bg, (0, bg_y))
+        screen.blit(bg, (0, bg_y - HEIGHT))
+        bg_y = (bg_y + 5) % HEIGHT
+
+        # Жаңарту
+        all_sprites.update()
+
+        # Коллизиялар (Соқтығысулар)
+        if pygame.sprite.spritecollideany(P1, enemies):
+            avaria_sound.play()
+            return score, sum_coin # Ойын бітті
+
+        if pygame.sprite.spritecollide(P1, coins, True):
+            sum_coin += random.randint(1, 3)
+            new_c = Coin()
+            coins.add(new_c); all_sprites.add(new_c)
+
+        if pygame.sprite.spritecollideany(P1, muds):
+            P1.slow_timer = time.time() + 2 # 2 секундқа баяулау
+
+        # Сурет салу
+        all_sprites.draw(screen)
+        
+        s_txt = font_small.render(f"Score: {score}", True, (0,0,0))
+        c_txt = font_small.render(f"Coins: {sum_coin}", True, (0,0,0))
+        screen.blit(s_txt, (10, 10))
+        screen.blit(c_txt, (10, 45))
+
         pygame.display.flip()
+        clock.tick(60)
+
+def game_over_screen(s, c):
+    while True:
+        screen.fill((255, 0, 0))
+        go_txt = font_big.render("GAME OVER", True, (0,0,0))
+        res_txt = font_small.render(f"Final Score: {s} | Coins: {c}", True, (0,0,0))
+        hint_txt = font_small.render("SPACE to Restart | M for Menu", True, (255, 255, 255))
         
-        time.sleep(5)
-        running = False
+        screen.blit(go_txt, (WIDTH//2 - go_txt.get_width()//2, 200))
+        screen.blit(res_txt, (WIDTH//2 - res_txt.get_width()//2, 300))
+        screen.blit(hint_txt, (WIDTH//2 - hint_txt.get_width()//2, 400))
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit(); sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE: return True
+                if event.key == pygame.K_m: return False
+        pygame.display.update()
 
-
-
-    scores= scores_font.render(f"Score: {score}",True,(0,0,0))
-    coin_s = scores_font.render(f"Coin: {sum_coin}",True,(0,0,0))
-    screen.blit(scores,(10,10))
-    screen.blit(coin_s,(10,40))
-
-
-
-    for entity in all_sprites:
-        screen.blit(entity.image, entity.rect)
-    #фон жүрісі
-    bg_y += 5
-    if bg_y >= bg_hight:
-        bg_y =0
-    pygame.display.flip()
-    clock.tick(60)
-pygame.quit()
-    
+# Негізгі программа ағыны
+while True:
+    show_intro()
+    final_s, final_c = game_loop()
+    if not game_over_screen(final_s, final_c):
+        continue # Мәзірге қайту

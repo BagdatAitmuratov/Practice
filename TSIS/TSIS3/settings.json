@@ -1,5 +1,5 @@
 {
-    "color": "up_player.png",
-    "diff": 4,
-    "music": true
+  "color": "up_player.png",
+  "diff": 4,
+  "sound": true
 }
