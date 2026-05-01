@@ -1,1 +1,1 @@
-screen.blit(bg,(0,0))
+elf.rect.center = (randint(75,675),-100)#

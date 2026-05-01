@@ -4,7 +4,7 @@ from PIL import Image
 image = Image.open('car.png')
 
 # set new size (width, height)
-new_size = (100,100)
+new_size = (50,100)
 
 # change the image size 
 resized_image = image.resize(new_size, Image.BICUBIC)
