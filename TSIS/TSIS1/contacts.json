@@ -1,0 +1,30 @@
+[
+    {
+        "name": "Alikhan",
+        "email": "alikhan@gmail.com",
+        "birthday": "2005-05-15",
+        "group": "Friend",
+        "phones": [
+            {
+                "phone": "87011112233",
+                "type": "mobile"
+            },
+            {
+                "phone": "87272223344",
+                "type": "home"
+            }
+        ]
+    },
+    {
+        "name": "Madi",
+        "email": "madi.it@kbtu.kz",
+        "birthday": "2006-10-20",
+        "group": "Work",
+        "phones": [
+            {
+                "phone": "87779998877",
+                "type": "work"
+            }
+        ]
+    }
+]
