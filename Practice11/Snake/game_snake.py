@@ -17,8 +17,6 @@ point_img = pygame.image.load("images/point.png")
 head_original = pygame.transform.scale(head_img, (50, 50))
 body_original = pygame.transform.scale(body_img, (40, 40))
 point_original = pygame.transform.scale(point_img, (45, 45))
-
-# Бастапқы басы (бұрылу үшін айнымалы)
 head_rotated = head_original
 
 font = pygame.font.SysFont(None, 50)
@@ -46,12 +44,11 @@ class Food:
     def draw(self, surface):
         surface.blit(self.img, (self.x, self.y))
 
-# Ойынды басына қайтару функциясы
+# ойында басынан бастау
 def reset_game():
-    # Басында тек бір ғана басы болады, бағыт тоқтап тұрады
     return [[682, 400]], "STOP", 0, False, 10
 
-# Параметрлерді жүктеу
+#параметр
 snake_pos, direction, score, game_over, speed = reset_game()
 change_to = direction
 food = Food()
@@ -64,7 +61,7 @@ while run:
         
         if event.type == pygame.KEYDOWN:
             if not game_over:
-                # Бағытты өзгерту және басты бұру логикасы
+                # бағыттар
                 if event.key == pygame.K_UP and direction != "DOWN":
                     change_to = "UP"
                     head_rotated = pygame.transform.rotate(head_original, -90)
@@ -86,8 +83,6 @@ while run:
 
     if not game_over:
         direction = change_to
-        
-        # Қозғалыс тек STOP болмағанда басталады
         if direction != "STOP":
             new_head = list(snake_pos[0])
             
@@ -98,32 +93,27 @@ while run:
             
             snake_pos.insert(0, new_head)
             
-            # Тамақ жеуді тексеру
+            #тамақ жеу
             head_rect = pygame.Rect(new_head[0], new_head[1], 45, 45)
             if head_rect.colliderect(food.rect):
                 score += food.weight
-                # Жылдамдықты арттыру (әр 10 ұпай сайын)
-                if score % 10 == 0:
+                if score % 5 == 0:
                     speed += 1
                 food.spawn()
-                # Алма жегенде pop() жасамаймыз, жылан ұзарады
             else:
                 snake_pos.pop()
 
-            # Қабырғаға соғылу
+            # қвбарғаға соғылу
             if new_head[0] < 0 or new_head[0] > 1315 or new_head[1] < 0 or new_head[1] > 718:
                 game_over = True
                 
-            # Өзіне соғылу (тек жылан ұзарғанда мүмкін)
+            #денеге соғылу
             for block in snake_pos[1:]:
                 if new_head == block:
                     game_over = True
-
-        # СУРЕТ САЛУ
         screen.blit(bg, (0, 0))
         food.update()
         food.draw(screen)
-        
         for i, pos in enumerate(snake_pos):
             if i == 0:
                 screen.blit(head_rotated, (pos[0], pos[1]))
@@ -134,7 +124,7 @@ while run:
         screen.blit(score_text, (20, 20))
 
     else:
-        # Game Over экраны
+        #game over 
         screen.fill((255, 0, 0))
         over_text = big_font.render("GAME OVER", True, (0, 0, 0))
         final_score = font.render(f"Final Score: {score}", True, (255, 255, 255))
