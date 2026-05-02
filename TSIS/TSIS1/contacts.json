@@ -1,5 +1,52 @@
 [
     {
+        "name": "Murat",
+        "email": "murat.dev@google.com",
+        "birthday": "2003-09-22",
+        "group": "Work",
+        "phones": [
+            {
+                "phone": "87775556677",
+                "type": "mobile"
+            },
+            {
+                "phone": "87019990011",
+                "type": "work"
+            }
+        ]
+    },
+    {
+        "name": "Test User",
+        "email": "test@mail.com",
+        "birthday": "2000-01-01",
+        "group": "Work",
+        "phones": [
+            {
+                "phone": "87001112233",
+                "type": "mobile"
+            }
+        ]
+    },
+    {
+        "name": "Gaukhar",
+        "email": "gaukhar.k@gmail.com",
+        "birthday": "2005-02-10",
+        "group": "Family",
+        "phones": []
+    },
+    {
+        "name": "Dana",
+        "email": "dana.queen@gmail.com",
+        "birthday": "2006-07-18",
+        "group": "Friend",
+        "phones": [
+            {
+                "phone": "87071239988",
+                "type": "mobile"
+            }
+        ]
+    },
+    {
         "name": "Alikhan",
         "email": "alikhan@gmail.com",
         "birthday": "2005-05-15",
@@ -12,6 +59,38 @@
             {
                 "phone": "87272223344",
                 "type": "home"
+            },
+            {
+                "phone": "87015554433",
+                "type": "mobile"
+            },
+            {
+                "phone": "87273332211",
+                "type": "home"
+            }
+        ]
+    },
+    {
+        "name": "Aruzhan",
+        "email": "aru.it@kbtu.kz",
+        "birthday": "2005-08-25",
+        "group": "Work",
+        "phones": [
+            {
+                "phone": "87012223344",
+                "type": "work"
+            }
+        ]
+    },
+    {
+        "name": "Sanzhar",
+        "email": "sanzh.it@kbtu.kz",
+        "birthday": "2005-12-05",
+        "group": "Work",
+        "phones": [
+            {
+                "phone": "87473334455",
+                "type": "work"
             }
         ]
     },
@@ -23,6 +102,85 @@
         "phones": [
             {
                 "phone": "87779998877",
+                "type": "work"
+            },
+            {
+                "phone": "87771112233",
+                "type": "work"
+            },
+            {
+                "phone": "87084445566",
+                "type": "mobile"
+            }
+        ]
+    },
+    {
+        "name": "Damir",
+        "email": "damir.pro@mail.ru",
+        "birthday": "2006-03-14",
+        "group": "Friend",
+        "phones": [
+            {
+                "phone": "87071110022",
+                "type": "mobile"
+            },
+            {
+                "phone": "87274445566",
+                "type": "home"
+            }
+        ]
+    },
+    {
+        "name": "Bauyrzhan",
+        "email": "bauka.88@gmail.com",
+        "birthday": "1998-05-20",
+        "group": "Family",
+        "phones": [
+            {
+                "phone": "87018887766",
+                "type": "mobile"
+            }
+        ]
+    },
+    {
+        "name": "Temirlan",
+        "email": "temi.lan@mail.ru",
+        "birthday": "2006-06-06",
+        "group": "Other",
+        "phones": []
+    },
+    {
+        "name": "Askar",
+        "email": "askar.a@gmail.com",
+        "birthday": "2004-01-12",
+        "group": "Family",
+        "phones": [
+            {
+                "phone": "87479998877",
+                "type": "mobile"
+            }
+        ]
+    },
+    {
+        "name": "Bagdat",
+        "email": "baga1234@kbtu.kz",
+        "birthday": "2008-07-14",
+        "group": "work",
+        "phones": [
+            {
+                "phone": "87786531234",
+                "type": "work"
+            }
+        ]
+    },
+    {
+        "name": "Elena",
+        "email": "elena.v@yahoo.com",
+        "birthday": "2004-11-30",
+        "group": "Work",
+        "phones": [
+            {
+                "phone": "87770001122",
                 "type": "work"
             }
         ]
