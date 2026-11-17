@@ -1,0 +1,13 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {generate,slideMove,slideSolved,colorsSolved,pour} from '../src/engine.js';
+import {languages} from '../src/i18n.js';
+test('every game generates deterministic levels 1–1000',()=>{for(let game=0;game<9;game++)for(let level=1;level<=1000;level++){let s=generate(game,level);assert.ok(s);assert.deepEqual(s,generate(game,level));}});
+test('memory always has exactly two cards of each symbol',()=>{for(let level=1;level<=1000;level++){const {cards}=generate(0,level);for(const v of new Set(cards))assert.equal(cards.filter(x=>x===v).length,2);}});
+test('sliding puzzles have a solvable parity and start unsolved',()=>{for(let level=1;level<=1000;level++){let s=generate(1,level),a=s.tiles.filter(Boolean),inversions=0;for(let i=0;i<a.length;i++)for(let j=i+1;j<a.length;j++)if(a[i]>a[j])inversions++;if(s.n%2)assert.equal(inversions%2,0);else assert.equal((inversions+s.n-Math.floor(s.tiles.indexOf(0)/s.n))%2,1);assert.equal(slideSolved(s),false);}});
+test('slide moves reject diagonal and nonadjacent tiles',()=>{let s={n:3,tiles:[1,2,3,4,5,6,7,0,8]};assert.equal(slideMove(s,5),false);assert.equal(slideMove(s,8),true);assert.ok(slideSolved(s));});
+test('every generated maze connects start and finish',()=>{for(let level=1;level<=1000;level++){let s=generate(3,level),seen=new Set([0]),todo=[0];while(todo.length){let p=todo.pop();s.cells[p].forEach((wall,d)=>{if(wall)return;let q=p+[-s.n,1,s.n,-1][d];assert.ok(q>=0&&q<s.n*s.n);assert.equal(s.cells[q][(d+2)%4],false);if(!seen.has(q)){seen.add(q);todo.push(q);}});}assert.equal(seen.size,s.n*s.n);}});
+test('color sort preserves four of each color and starts mixed',()=>{for(let level=1;level<=1000;level++){let s=generate(2,level),all=s.tubes.flat();for(const c of new Set(all))assert.equal(all.filter(x=>x===c).length,4);assert.ok(s.tubes.every(t=>t.length<=4));assert.equal(colorsSolved(s),false);}});
+test('pour enforces matching colors and capacity',()=>{const s={tubes:[[0,0],[1,1],[]]};assert.equal(pour(s,0,1),false);assert.equal(pour(s,0,2),true);assert.deepEqual(s.tubes,[[0],[1,1],[0]]);assert.equal(pour(s,0,2),true);assert.deepEqual(s.tubes,[[],[1,1],[0,0]]);});
+test('dot puzzles have unique endpoints with space for all paths',()=>{for(let level=1;level<=1000;level++){let s=generate(5,level);assert.equal(new Set(s.ends.flat()).size,s.ends.length*2);}});
+test('all languages include all labels and nine game instructions',()=>{const keys=Object.keys(languages.kk).sort();for(const lang of Object.values(languages)){assert.deepEqual(Object.keys(lang).sort(),keys);assert.equal(lang.names.length,9);assert.equal(lang.descs.length,9);assert.equal(lang.instructions.length,9);}});
